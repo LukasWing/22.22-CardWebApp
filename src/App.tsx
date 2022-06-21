@@ -3,12 +3,15 @@ import './App.css';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
+import { setMaxListeners } from 'process';
 
 function App() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [success, setSuccess] = useState(true);
   const [oneDone, setOneDone] = useState(false);
+  const [msg, setMsg] = useState("None");
+  
 
   
   let postAndListen = async (e:React.FormEvent) => {
@@ -19,7 +22,11 @@ function App() {
     if(cardSuccess){
       setQuestion("");
       setAnswer("");
-    }
+      setMsg("Success")
+    } else {
+      const quoteStripped = msg.substring(1, msg.length - 1);
+      setMsg(quoteStripped);
+    } 
     setOneDone(true);
   }
 
@@ -50,7 +57,7 @@ function App() {
             !success && oneDone
               ?
               <UploadError>
-                <FontAwesomeIcon icon={faX}></FontAwesomeIcon> Der skete en fejl.
+                <FontAwesomeIcon icon={faX}></FontAwesomeIcon> {msg}
               </UploadError>
               :
               ""
@@ -59,7 +66,7 @@ function App() {
             success && oneDone
               ?
               <UploadSuccess>
-                <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon> Succes
+                <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon> {msg}
               </UploadSuccess>
               :
               ""
